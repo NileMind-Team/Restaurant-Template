@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NileFood.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial_IdentityTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -168,7 +168,8 @@ namespace NileFood.Infrastructure.Data.Migrations
                 {
                     { "0191d311-2918-7f76-bd8a-0bded8535075", "0191d311-2918-7f76-bd8a-0be08dd83078", "Admin", "ADMIN" },
                     { "0191d311-2918-7f76-bd8a-0bdf740adff8", "0191d311-2918-7f76-bd8a-0be100f11384", "Restaurant", "RESTAURANT" },
-                    { "ce2fd704-7a3c-4a03-846e-c5479a8b921d", "aacecacd-28e1-43cc-92da-decb1f9b32c4", "User", "USER" }
+                    { "ce2fd704-7a3c-4a03-846e-c5479a8b921d", "aacecacd-28e1-43cc-92da-decb1f9b32c4", "User", "USER" },
+                    { "feb07bce-2808-40bb-8561-9b95ed1d2816", "644f048f-1dcf-4b6c-b21c-55a24018046e", "Branch", "BRANCH" }
                 });
 
             migrationBuilder.InsertData(

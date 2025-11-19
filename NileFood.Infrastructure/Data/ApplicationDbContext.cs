@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NileFood.Domain.Entities;
 using NileFood.Domain.Entities.Identity;
 
 namespace NileFood.Infrastructure.Data;
@@ -7,6 +8,23 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
+    public DbSet<Location> Locations { get; set; } = null!;
+    public DbSet<City> Cities { get; set; } = null!;
+    public DbSet<Branch> Branches { get; set; } = null!;
+    public DbSet<DeliveryFee> DeliveryFees { get; set; } = null!;
+    public DbSet<Review> Reviews { get; set; } = null!;
+    public DbSet<BranchPromoCode> BranchPromoCodes { get; set; } = null!;
+    public DbSet<PromoCode> PromoCodes { get; set; }
+    public DbSet<PhoneNumber> PhoneNumbers { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<MenuItem> MenuItems { get; set; }
+    public DbSet<MenuItemOption> MenuItemOptions { get; set; }
+    public DbSet<MenuItemOptionType> MenuItemOptionTypes { get; set; }
+    public DbSet<BranchMenuItem> BranchMenuItems { get; set; }
+
+
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

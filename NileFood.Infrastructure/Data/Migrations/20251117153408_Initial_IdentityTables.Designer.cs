@@ -12,8 +12,8 @@ using NileFood.Infrastructure.Data;
 namespace NileFood.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251108195402_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251117153408_Initial_IdentityTables")]
+    partial class Initial_IdentityTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,6 +72,13 @@ namespace NileFood.Infrastructure.Data.Migrations
                             ConcurrencyStamp = "aacecacd-28e1-43cc-92da-decb1f9b32c4",
                             Name = "User",
                             NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "feb07bce-2808-40bb-8561-9b95ed1d2816",
+                            ConcurrencyStamp = "644f048f-1dcf-4b6c-b21c-55a24018046e",
+                            Name = "Branch",
+                            NormalizedName = "BRANCH"
                         });
                 });
 

@@ -13,6 +13,10 @@ public class ApplicationUserConfigurations : IEntityTypeConfiguration<Applicatio
 
         builder.Property(x => x.LastName).HasMaxLength(50);
 
+        //builder.HasOne(u => u.DefaultLocation)
+        //.WithOne()
+        //.HasForeignKey<ApplicationUser>(u => u.DefaultLocationId)
+        //.OnDelete(DeleteBehavior.Restrict);
 
 
         var Users = new List<ApplicationUser>()
