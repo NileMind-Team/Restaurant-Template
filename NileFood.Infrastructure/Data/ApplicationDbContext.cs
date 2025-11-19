@@ -22,6 +22,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<MenuItemOption> MenuItemOptions { get; set; }
     public DbSet<MenuItemOptionType> MenuItemOptionTypes { get; set; }
     public DbSet<BranchMenuItem> BranchMenuItems { get; set; }
+    public DbSet<Offer> Offers { get; set; }
+    public DbSet<OfferTarget> OfferTargets { get; set; }
 
 
 
