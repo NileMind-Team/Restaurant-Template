@@ -75,7 +75,7 @@ public class LocationService(ApplicationDbContext context) : ILocationService
             return Result.Failure(LocationErrors.LocationNotFound);
 
         
-        _context.Remove(id);
+        _context.Remove(location);
         await _context.SaveChangesAsync();
 
         return Result.Success();
