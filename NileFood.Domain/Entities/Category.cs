@@ -8,4 +8,5 @@ public class Category
     public DateTime CreatedAt { get; set; }
 
     public List<MenuItem> MenuItems { get; set; } = [];
+    //public List<OfferTarget> OfferTargets { get; set; } = [];
 }

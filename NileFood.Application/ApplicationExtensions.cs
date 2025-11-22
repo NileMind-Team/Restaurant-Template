@@ -51,6 +51,7 @@ public static class ApplicationExtensions
         services.AddScoped<IFileService, FileService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<ILocationService, LocationService>();
 
 
         return services;

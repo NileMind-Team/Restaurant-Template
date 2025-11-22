@@ -1,5 +1,7 @@
 ﻿using NileFood.Application.Contracts.Authentication;
+using NileFood.Application.Contracts.Locations;
 using NileFood.Application.Contracts.Users;
+using NileFood.Domain.Entities;
 using NileFood.Domain.Entities.Identity;
 
 namespace NileFood.Application.Mapping;
@@ -22,5 +24,6 @@ internal class MappingProfile : IRegister
             .Map(dest => dest.Email, src => src.user.Email)
             .Map(dest => dest.Roles, src => src.roles);
 
+        config.NewConfig<Location, LocationResponse>().Map(dest => dest.IsDefaultLocation,src => src.User != null && src.User.DefaultLocationId == src.Id);
     }
 }

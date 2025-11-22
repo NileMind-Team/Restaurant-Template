@@ -31,6 +31,7 @@ public class Branch
     public List<Review> Reviews { get; set; } = [];
     public List<BranchPromoCode> BranchPromoCodes { get; set; } = [];
     public List<BranchMenuItem> BranchMenuItems { get; set; } = [];
+    //public List<OfferTarget> OfferTargets { get; set; } = [];
 }
 
 

@@ -250,7 +250,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Branches");
+                    b.ToTable("Branches", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.BranchMenuItem", b =>
@@ -276,7 +276,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasIndex("MenuItemId");
 
-                    b.ToTable("BranchMenuItems");
+                    b.ToTable("BranchMenuItems", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.BranchPromoCode", b =>
@@ -299,7 +299,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasIndex("PromoCodeId");
 
-                    b.ToTable("BranchPromoCodes");
+                    b.ToTable("BranchPromoCodes", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.Category", b =>
@@ -322,7 +322,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.City", b =>
@@ -339,7 +339,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.DeliveryFee", b =>
@@ -360,7 +360,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("DeliveryFees");
+                    b.ToTable("DeliveryFees", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.Identity.ApplicationUser", b =>
@@ -514,7 +514,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.MenuItem", b =>
@@ -555,7 +555,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("MenuItems");
+                    b.ToTable("MenuItems", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.MenuItemOption", b =>
@@ -591,7 +591,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("MenuItemOptions");
+                    b.ToTable("MenuItemOptions", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.MenuItemOptionType", b =>
@@ -608,7 +608,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MenuItemOptionTypes");
+                    b.ToTable("MenuItemOptionTypes", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.Notification", b =>
@@ -653,7 +653,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.PhoneNumber", b =>
@@ -684,7 +684,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("PhoneNumbers");
+                    b.ToTable("PhoneNumbers", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.PromoCode", b =>
@@ -729,7 +729,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PromoCodes");
+                    b.ToTable("PromoCodes", (string)null);
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.Review", b =>
@@ -761,104 +761,7 @@ namespace NileFood.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
-                });
-
-            modelBuilder.Entity("Offer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("DiscountType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<decimal>("DiscountValue")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Level")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<decimal?>("MinOrderAmount")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UsageCount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UsageLimit")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Level");
-
-                    b.HasIndex("StartDate", "EndDate");
-
-                    b.ToTable("Offers");
-                });
-
-            modelBuilder.Entity("OfferTarget", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MenuItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OfferId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("MenuItemId");
-
-                    b.HasIndex("OfferId");
-
-                    b.HasIndex("OfferId", "BranchId", "CategoryId", "MenuItemId")
-                        .HasDatabaseName("IX_OfferTarget_Composite");
-
-                    b.ToTable("OfferTargets");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1079,38 +982,6 @@ namespace NileFood.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("OfferTarget", b =>
-                {
-                    b.HasOne("NileFood.Domain.Entities.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("NileFood.Domain.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("NileFood.Domain.Entities.MenuItem", "MenuItem")
-                        .WithMany()
-                        .HasForeignKey("MenuItemId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Offer", "Offer")
-                        .WithMany("OfferTargets")
-                        .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("MenuItem");
-
-                    b.Navigation("Offer");
-                });
-
             modelBuilder.Entity("NileFood.Domain.Entities.Branch", b =>
                 {
                     b.Navigation("BranchMenuItems");
@@ -1151,11 +1022,6 @@ namespace NileFood.Infrastructure.Data.Migrations
             modelBuilder.Entity("NileFood.Domain.Entities.PromoCode", b =>
                 {
                     b.Navigation("BranchPromoCodes");
-                });
-
-            modelBuilder.Entity("Offer", b =>
-                {
-                    b.Navigation("OfferTargets");
                 });
 #pragma warning restore 612, 618
         }
