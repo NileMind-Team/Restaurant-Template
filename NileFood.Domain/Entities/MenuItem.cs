@@ -7,7 +7,7 @@ public class MenuItem
     public decimal BasePrice { get; set; }
     public string ImageUrl { get; set; } = null!;
 
-    public bool IsAvailableNow { get; set; }
+    //public bool IsAvailableNow { get; set; }
     public bool IsAllTime { get; set; }
     public bool IsActive { get; set; } = true;
 

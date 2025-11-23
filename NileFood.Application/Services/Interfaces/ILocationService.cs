@@ -10,5 +10,6 @@ public interface ILocationService
     Task<Result<LocationResponse>> CreateAsync(string userId ,LocationRequest request);
     Task<Result> ChangeDefaultLocationAsync(int id,string userId);
     Task<Result> UpdateAsync(int id, LocationRequest request);
-    Task<Result> DeleteAsync(int id);
+    Task<Result> DeleteAsync(int id);    
+
 }
