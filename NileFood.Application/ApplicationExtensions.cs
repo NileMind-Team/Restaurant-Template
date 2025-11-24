@@ -54,6 +54,7 @@ public static class ApplicationExtensions
         services.AddScoped<ILocationService, LocationService>();
         services.AddScoped<ICityService, CityService>();
         services.AddScoped<IMenuItemService, MenuItemService>();
+        services.AddScoped<ICategoryService, CategoryService>();
 
         return services;
     }

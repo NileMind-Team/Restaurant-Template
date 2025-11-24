@@ -6,7 +6,7 @@ namespace NileFood.Application.Services.Interfaces;
 
 public interface IMenuItemService
 {
-    Task<Result<List<MenuItemResponse>>> GetAllAsync();
+    Task<Result<List<MenuItemResponse>>> GetAllAsync(int? categoryId);
     Task<Result<MenuItemResponse>> GetAsync(int id);
     Task<Result<MenuItemResponse>> CreateAsync(MenuItemRequest request);
     Task<Result> UpdateAsync(int id, UpdateMenuItemRequest request);

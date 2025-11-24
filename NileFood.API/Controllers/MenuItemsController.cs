@@ -17,9 +17,9 @@ public class MenuItemsController(IMenuItemService menuItemService) : ControllerB
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(int? categoryId)
     {
-        var result = await _menuItemService.GetAllAsync();
+        var result = await _menuItemService.GetAllAsync(categoryId);
 
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }

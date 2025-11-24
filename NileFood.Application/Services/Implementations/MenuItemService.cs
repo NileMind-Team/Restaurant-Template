@@ -12,12 +12,13 @@ public class MenuItemService(ApplicationDbContext context, IFileService fileServ
     private readonly ApplicationDbContext _context = context;
     private readonly IFileService _fileService = fileService;
 
-    public async Task<Result<List<MenuItemResponse>>> GetAllAsync()
+    public async Task<Result<List<MenuItemResponse>>> GetAllAsync(int? categoryId)
     {
         var menuItems = await _context.MenuItems
+            .Where(x => !categoryId.HasValue || x.CategoryId == categoryId)
             .Include(x => x.Category)
-            .ProjectToType<MenuItemResponse>()
             .AsNoTracking()
+            .ProjectToType<MenuItemResponse>()
             .ToListAsync();
 
         return Result.Success(menuItems);
@@ -66,6 +67,9 @@ public class MenuItemService(ApplicationDbContext context, IFileService fileServ
         if (await _context.Categories.FirstOrDefaultAsync(x => x.Id == request.CategoryId) is not { } category)
             return Result.Failure(CategoryErrors.CategoryNotFound);
 
+        // Handle image update
+        await _fileService.DeleteAsync(menuItem.ImageUrl);
+        var imageUrl = await _fileService.UploadAsync(request.Image, $"Categories/{category.Name}");
 
         // Update schedules
         var scheduleResult = UpdateMenuItemSchedules(menuItem, request.MenuItemSchedules);
@@ -78,6 +82,7 @@ public class MenuItemService(ApplicationDbContext context, IFileService fileServ
         if (!menuItem.MenuItemSchedules.Any()) menuItem.IsAllTime = false;
 
         menuItem.IsAllTime = !menuItem.MenuItemSchedules.Any();
+        menuItem.ImageUrl = imageUrl;
 
         _context.Update(menuItem);
         await _context.SaveChangesAsync();
