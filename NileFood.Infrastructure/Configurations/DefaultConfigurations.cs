@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NileFood.Domain.Entities;
-using NileFood.Infrastructure.Data;
 
 namespace NileFood.Infrastructure.Configurations;
 
@@ -59,5 +58,14 @@ public class PhoneNumberConfigurations : IEntityTypeConfiguration<PhoneNumber>
         builder.Property(x => x.Phone).HasMaxLength(100).IsRequired();
 
         builder.Property(x => x.Type).HasMaxLength(100).IsRequired();
+    }
+}
+
+
+public class MenuItemScheduleConfigurations : IEntityTypeConfiguration<MenuItemSchedule>
+{
+    public void Configure(EntityTypeBuilder<MenuItemSchedule> builder)
+    {
+        builder.Property(x => x.Day).HasMaxLength(100).IsRequired();
     }
 }

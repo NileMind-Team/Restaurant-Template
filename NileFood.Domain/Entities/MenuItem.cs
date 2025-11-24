@@ -7,8 +7,7 @@ public class MenuItem
     public decimal BasePrice { get; set; }
     public string ImageUrl { get; set; } = null!;
 
-    //public bool IsAvailableNow { get; set; }
-    public bool IsAllTime { get; set; }
+    public bool IsAllTime { get; set; } = true;
     public bool IsActive { get; set; } = true;
 
     public int CategoryId { get; set; }
@@ -17,5 +16,6 @@ public class MenuItem
 
     public List<BranchMenuItem> BranchMenuItems { get; set; } = [];
     public List<MenuItemOption> MenuItemOptions { get; set; } = [];
-    //public List<OfferTarget> OfferTargets { get; set; } = [];
+    //public List<OfferTarget> OfferTargets { get; set; } = [];    
+    public List<MenuItemSchedule> MenuItemSchedules { get; set; } = [];
 }

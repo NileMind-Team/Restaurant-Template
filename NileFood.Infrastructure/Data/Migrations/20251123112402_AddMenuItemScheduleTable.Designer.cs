@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NileFood.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using NileFood.Infrastructure.Data;
 namespace NileFood.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251123112402_AddMenuItemScheduleTable")]
+    partial class AddMenuItemScheduleTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -619,10 +622,8 @@ namespace NileFood.Infrastructure.Data.Migrations
                     b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Day")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("Day")
+                        .HasColumnType("int");
 
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
@@ -985,7 +986,7 @@ namespace NileFood.Infrastructure.Data.Migrations
                         .HasForeignKey("BranchId");
 
                     b.HasOne("NileFood.Domain.Entities.MenuItem", "MenuItem")
-                        .WithMany("MenuItemSchedules")
+                        .WithMany()
                         .HasForeignKey("MenuItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1066,8 +1067,6 @@ namespace NileFood.Infrastructure.Data.Migrations
                     b.Navigation("BranchMenuItems");
 
                     b.Navigation("MenuItemOptions");
-
-                    b.Navigation("MenuItemSchedules");
                 });
 
             modelBuilder.Entity("NileFood.Domain.Entities.MenuItemOptionType", b =>

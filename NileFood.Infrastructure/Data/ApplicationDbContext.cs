@@ -19,6 +19,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<MenuItem> MenuItems { get; set; }
+    public DbSet<MenuItemSchedule> MenuItemSchedules { get; set; }
     public DbSet<MenuItemOption> MenuItemOptions { get; set; }
     public DbSet<MenuItemOptionType> MenuItemOptionTypes { get; set; }
     public DbSet<BranchMenuItem> BranchMenuItems { get; set; }

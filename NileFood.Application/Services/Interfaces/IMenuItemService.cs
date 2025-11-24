@@ -13,6 +13,4 @@ public interface IMenuItemService
     Task<Result> DeleteAsync(int id);
 
     Task<Result> ChangeMenuItemActiveStatusAsync(int id);
-    //Task<Result> ChangeMenuItemAvailabilityAsync(int id);
-
 }

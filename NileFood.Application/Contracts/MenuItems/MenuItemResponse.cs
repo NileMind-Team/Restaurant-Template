@@ -9,9 +9,11 @@ public class MenuItemResponse
     public string? Description { get; set; }
     public decimal BasePrice { get; set; }
     public string ImageUrl { get; set; } = null!;
-    
+
     public bool IsAllTime { get; set; }
     public bool IsActive { get; set; } = true;
 
     public CategoryResponse Category { get; set; } = null!;
+
+    public List<MenuItemScheduleResponse> MenuItemSchedules { get; set; } = [];
 }

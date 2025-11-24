@@ -35,7 +35,7 @@ public class MenuItemsController(IMenuItemService menuItemService) : ControllerB
 
 
     [HttpPost]
-    public async Task<IActionResult> Add(MenuItemRequest request)
+    public async Task<IActionResult> Add([FromForm] MenuItemRequest request)
     {
         var result = await _menuItemService.CreateAsync(request);
 
@@ -44,9 +44,17 @@ public class MenuItemsController(IMenuItemService menuItemService) : ControllerB
 
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update([FromRoute] int id, UpdateMenuItemRequest request)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromForm] UpdateMenuItemRequest request)
     {
         var result = await _menuItemService.UpdateAsync(id, request);
+
+        return result.IsSuccess ? NoContent() : result.ToProblem();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await _menuItemService.DeleteAsync(id);
 
         return result.IsSuccess ? NoContent() : result.ToProblem();
     }
@@ -58,5 +66,5 @@ public class MenuItemsController(IMenuItemService menuItemService) : ControllerB
         var result = await _menuItemService.ChangeMenuItemActiveStatusAsync(id);
 
         return result.IsSuccess ? NoContent() : result.ToProblem();
-    }   
+    }
 }
