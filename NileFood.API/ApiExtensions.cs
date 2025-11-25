@@ -29,7 +29,8 @@ public static class ApiExtensions
                 builder
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .AllowAnyOrigin();
+                    .AllowAnyOrigin()
+                    .WithExposedHeaders("Content-Disposition");
             });
         });
 

@@ -27,5 +27,8 @@ public class UserErrors
     public static readonly Error UserNotFound = new("User.NotFound", "User is not found ", StatusCodes.Status404NotFound);
 
     public static readonly Error InvalidRoles = new("User.InvalidRoles", "Invalid Roles", StatusCodes.Status400BadRequest);
+
+    public static readonly Error UserDoesNotHaveBranchRole =
+    new("User.NotBranchRole", "User must have the Branch role.", StatusCodes.Status400BadRequest);
 }
 

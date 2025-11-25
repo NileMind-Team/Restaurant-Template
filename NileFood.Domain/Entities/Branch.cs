@@ -13,8 +13,8 @@ public class Branch
     public string Status { get; set; } = null!;
     public double Rating_Avgarage { get; set; }
 
-    public DateTime OpeningTime { get; set; }
-    public DateTime ClosingTime { get; set; }
+    public TimeSpan OpeningTime { get; set; }
+    public TimeSpan ClosingTime { get; set; }
     public bool IsActive { get; set; }
 
 

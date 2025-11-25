@@ -15,4 +15,8 @@ public interface IUserService
     Task<IEnumerable<UserResponse>> GetAllAsync();
     Task<Result<UserResponse>> GetByIdAsync(string id);
     Task<Result<string>> DeleteAsync(string email);
+
+
+    Task<Result> AssignRoleAsync(string userId, string roleName);
+    Task<bool> UserHasRoleAsync(string userId, string roleName);
 }

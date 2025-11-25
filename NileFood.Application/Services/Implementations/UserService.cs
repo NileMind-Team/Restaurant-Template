@@ -3,11 +3,13 @@ using NileFood.Application.Contracts.Users;
 using NileFood.Application.Services.Interfaces;
 using NileFood.Domain.Entities.Identity;
 using NileFood.Domain.Errors;
+using NileFood.Infrastructure.Data;
 
 namespace NileFood.Application.Services.Implementations;
 
-public class UserService(UserManager<ApplicationUser> userManager, IFileService fileService, IRoleService roleService) : IUserService
+public class UserService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IFileService fileService, IRoleService roleService) : IUserService
 {
+    private readonly ApplicationDbContext _context = context;
     private readonly UserManager<ApplicationUser> _userManager = userManager;
 
     private readonly IFileService _fileService = fileService;
@@ -147,4 +149,44 @@ public class UserService(UserManager<ApplicationUser> userManager, IFileService 
 
         return Result.Success(userMapped);
     }
+
+    public async Task<bool> UserHasRoleAsync(string userId, string roleName)
+    {
+        return await _context.UserRoles
+            .Where(ur => ur.UserId == userId)
+            .Join(
+                _context.Roles,
+                ur => ur.RoleId,
+                r => r.Id,
+                (ur, r) => r.Name
+            )
+            .AnyAsync(r => r == roleName);
+    }
+
+
+    public async Task<Result> AssignRoleAsync(string userId, string roleName)
+    {
+
+        if (await _userManager.FindByIdAsync(userId) is not { } user)
+            return Result.Failure(UserErrors.UserNotFound);
+
+
+        var allowedRoles = (await _roleService.GetAllAsync()).Value.Select(r => r.Name);
+        if (!allowedRoles.Contains(roleName))
+            return Result.Failure(new Error("InvalidRole", $"Role '{roleName}' does not exist.", StatusCodes.Status400BadRequest));
+
+
+        if (await _userManager.IsInRoleAsync(user, roleName))
+            return Result.Failure(new Error("AlreadyAssigned", $"User already has role '{roleName}'.", StatusCodes.Status400BadRequest));
+
+        var result = await _userManager.AddToRoleAsync(user, roleName);
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            return Result.Failure(new Error("AssignRoleFailed", $"Failed to assign role: {errors}", StatusCodes.Status400BadRequest));
+        }
+
+        return Result.Success();
+    }
+
 }

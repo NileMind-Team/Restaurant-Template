@@ -42,6 +42,15 @@ public class UsersController(IUserService userService) : ControllerBase
     }
 
 
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> AssignRole(string userId, string role)
+    {
+        var result = await _userService.AssignRoleAsync(userId, role);
+        return result.IsSuccess ? Ok() : result.ToProblem();
+    }
+
+
     [HttpDelete("{email}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Delete(string email)

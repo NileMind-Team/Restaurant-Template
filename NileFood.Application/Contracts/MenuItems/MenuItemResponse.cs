@@ -13,6 +13,10 @@ public class MenuItemResponse
     public bool IsAllTime { get; set; }
     public bool IsActive { get; set; } = true;
 
+    public int? Calories { get; set; }
+    public int PreparationTimeStart { get; set; }
+    public int PreparationTimeEnd { get; set; }
+
     public CategoryResponse Category { get; set; } = null!;
 
     public List<MenuItemScheduleResponse> MenuItemSchedules { get; set; } = [];

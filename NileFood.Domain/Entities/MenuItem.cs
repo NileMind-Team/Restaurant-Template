@@ -7,6 +7,10 @@ public class MenuItem
     public decimal BasePrice { get; set; }
     public string ImageUrl { get; set; } = null!;
 
+    public int? Calories { get; set; }
+    public int PreparationTimeStart { get; set; }
+    public int PreparationTimeEnd { get; set; }
+
     public bool IsAllTime { get; set; } = true;
     public bool IsActive { get; set; } = true;
 

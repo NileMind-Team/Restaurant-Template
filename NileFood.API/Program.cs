@@ -46,11 +46,19 @@ app.UseHangfireDashboard("/jobs", new DashboardOptions()
     // IsReadOnlyFunc = (DashboardContext context) => true
 
 });
+
+app.UseCors("MyPolicy");
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+    await next.Invoke();
+});
+
+
 app.UseStaticFiles();
 
 app.UseHttpsRedirection();
-
-app.UseCors("MyPolicy");
 
 app.UseAuthorization();
 

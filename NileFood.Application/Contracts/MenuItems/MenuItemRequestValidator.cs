@@ -26,6 +26,25 @@ public class MenuItemRequestValidator : AbstractValidator<MenuItemRequest>
             .Must(ValidateFile)
             .WithMessage("Invalid file format or size. Allowed formats are .jpg, .jpeg, and .png. Maximum size is 5MB.");
 
+
+        RuleFor(x => x.Calories)
+            .GreaterThanOrEqualTo(0)
+            .When(x => x.Calories.HasValue)
+            .WithMessage("Calories must be 0 or greater.");
+
+        RuleFor(x => x.PreparationTimeStart)
+            .GreaterThanOrEqualTo(0)
+            .WithMessage("Preparation time start must be 0 or greater.");
+
+        RuleFor(x => x.PreparationTimeEnd)
+            .GreaterThanOrEqualTo(0)
+            .WithMessage("Preparation time end must be 0 or greater.");
+
+        RuleFor(x => x)
+            .Must(x => x.PreparationTimeStart < x.PreparationTimeEnd)
+            .WithMessage("PreparationTimeStart must be less than PreparationTimeEnd.");
+
+
         RuleFor(x => x.MenuItemSchedules)
             .Must(NoOverlappingSchedules)
             .WithMessage("Schedules in the request cannot overlap on the same day and branch");
