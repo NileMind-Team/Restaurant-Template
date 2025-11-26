@@ -56,6 +56,8 @@ public static class ApplicationExtensions
         services.AddScoped<IMenuItemService, MenuItemService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IBranchService, BranchService>();
+        services.AddScoped(typeof(IFilterService<>), typeof(FilterService<>));
+        services.AddScoped<IMenuItemOptionTypeService, MenuItemOptionTypeService>();
 
         return services;
     }

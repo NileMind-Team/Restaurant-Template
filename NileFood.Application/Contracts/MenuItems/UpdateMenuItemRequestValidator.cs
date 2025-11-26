@@ -24,14 +24,20 @@ public class UpdateMenuItemRequestValidator : AbstractValidator<UpdateMenuItemRe
 
         RuleFor(x => x.PreparationTimeStart)
             .GreaterThanOrEqualTo(0)
+            .When(x => x.PreparationTimeStart.HasValue)
             .WithMessage("Preparation time start must be 0 or greater.");
 
         RuleFor(x => x.PreparationTimeEnd)
             .GreaterThanOrEqualTo(0)
+            .When(x => x.PreparationTimeEnd.HasValue)
             .WithMessage("Preparation time end must be 0 or greater.");
 
         RuleFor(x => x)
-            .Must(x => x.PreparationTimeStart < x.PreparationTimeEnd)
+            .Must(x =>
+                x.PreparationTimeStart.HasValue &&
+                x.PreparationTimeEnd.HasValue &&
+                x.PreparationTimeStart.Value < x.PreparationTimeEnd.Value)
+            .When(x => x.PreparationTimeStart.HasValue && x.PreparationTimeEnd.HasValue)
             .WithMessage("PreparationTimeStart must be less than PreparationTimeEnd.");
 
 

@@ -11,8 +11,8 @@ public class UpdateMenuItemRequest
     public IFormFile Image { get; set; } = null!;
 
     public int? Calories { get; set; }
-    public int PreparationTimeStart { get; set; }
-    public int PreparationTimeEnd { get; set; }
+    public int? PreparationTimeStart { get; set; }
+    public int? PreparationTimeEnd { get; set; }
 
 
     [FromForm]

@@ -12,8 +12,8 @@ public class MenuItemRequest
     public bool IsActive { get; set; }
 
     public int? Calories { get; set; }
-    public int PreparationTimeStart { get; set; }
-    public int PreparationTimeEnd { get; set; }
+    public int? PreparationTimeStart { get; set; }
+    public int? PreparationTimeEnd { get; set; }
 
 
     [FromForm]

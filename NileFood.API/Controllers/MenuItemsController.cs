@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NileFood.API.Extensions;
+using NileFood.Application.Contracts.Common;
 using NileFood.Application.Contracts.MenuItems;
 using NileFood.Application.Services.Interfaces;
 using NileFood.Domain.Consts;
@@ -17,9 +18,11 @@ public class MenuItemsController(IMenuItemService menuItemService) : ControllerB
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<IActionResult> GetAll(int? categoryId)
+    public async Task<IActionResult> GetAll([FromQuery] Dictionary<string, string> filterDto, [FromQuery] UserParams userParams, int? categoryId)
     {
-        var result = await _menuItemService.GetAllAsync(categoryId);
+        var filters = FilterDto.BindFromDictionary(filterDto);
+
+        var result = await _menuItemService.GetAllAsync(filters, userParams, categoryId);
 
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }

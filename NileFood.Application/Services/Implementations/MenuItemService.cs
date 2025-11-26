@@ -1,4 +1,6 @@
-﻿using NileFood.Application.Abstractions;
+﻿using Egyptos.Application.Abstractions;
+using NileFood.Application.Abstractions;
+using NileFood.Application.Contracts.Common;
 using NileFood.Application.Contracts.MenuItems;
 using NileFood.Application.Services.Interfaces;
 using NileFood.Domain.Entities;
@@ -7,21 +9,21 @@ using NileFood.Infrastructure.Data;
 
 namespace NileFood.Application.Services.Implementations;
 
-public class MenuItemService(ApplicationDbContext context, IFileService fileService) : IMenuItemService
+public class MenuItemService(ApplicationDbContext context, IFileService fileService, IFilterService<MenuItem> filterService) : IMenuItemService
 {
     private readonly ApplicationDbContext _context = context;
     private readonly IFileService _fileService = fileService;
+    private readonly IFilterService<MenuItem> _filterService = filterService;
 
-    public async Task<Result<List<MenuItemResponse>>> GetAllAsync(int? categoryId)
+    public async Task<Result<PaginatedList<MenuItemResponse>>> GetAllAsync(List<FilterDto> filters, UserParams userParams, int? categoryId)
     {
-        var menuItems = await _context.MenuItems
-            .Where(x => !categoryId.HasValue || x.CategoryId == categoryId)
-            .Include(x => x.Category)
-            .AsNoTracking()
-            .ProjectToType<MenuItemResponse>()
-            .ToListAsync();
 
-        return Result.Success(menuItems);
+        var filtered = await _filterService.Filter(filters, userParams, null, null);
+
+
+        var x = new PaginatedList<MenuItemResponse>(null, 1, 1, 1);
+
+        return Result.Success(x);
     }
 
     public async Task<Result<MenuItemResponse>> GetAsync(int id)
@@ -33,7 +35,6 @@ public class MenuItemService(ApplicationDbContext context, IFileService fileServ
 
         return menuItem is null ? Result.Failure<MenuItemResponse>(MenuItemErrors.MenuItemNotFound) : Result.Success(menuItem);
     }
-
 
     public async Task<Result<MenuItemResponse>> CreateAsync(MenuItemRequest request)
     {
@@ -100,7 +101,6 @@ public class MenuItemService(ApplicationDbContext context, IFileService fileServ
 
         return Result.Success();
     }
-
 
     public async Task<Result> ChangeMenuItemActiveStatusAsync(int id)
     {
