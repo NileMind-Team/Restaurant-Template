@@ -21,7 +21,6 @@ public class Branch
     public int CityId { get; set; }
     public City City { get; set; } = null!;
 
-    public List<DeliveryFee> DeliveryFee { get; set; } = [];
 
     public string ManagerId { get; set; } = null!;
     [ForeignKey(nameof(ManagerId))]
@@ -31,6 +30,7 @@ public class Branch
     public List<Review> Reviews { get; set; } = [];
     public List<BranchPromoCode> BranchPromoCodes { get; set; } = [];
     public List<BranchMenuItem> BranchMenuItems { get; set; } = [];
+    public List<DeliveryFee> DeliveryFee { get; set; } = [];
     //public List<OfferTarget> OfferTargets { get; set; } = [];
 }
 

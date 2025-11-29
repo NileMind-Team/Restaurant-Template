@@ -1,5 +1,5 @@
-﻿namespace NileFood.Domain.Entities;
-public class DeliveryFee
+﻿namespace NileFood.Application.Contracts.DeliveryFees;
+public class DeliveryFeeResponse
 {
     public int Id { get; set; }
 
@@ -10,7 +10,6 @@ public class DeliveryFee
     public int EstimatedTimeMax { get; set; }
 
     public int BranchId { get; set; }
-    public Branch Branch { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
