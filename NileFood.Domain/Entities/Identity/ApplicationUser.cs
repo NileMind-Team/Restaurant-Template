@@ -15,6 +15,6 @@ public class ApplicationUser : IdentityUser
     public List<Location> Locations { get; set; } = [];
     public List<Review> Reviews { get; set; } = [];
     public List<Branch> Branches { get; set; } = [];
-
+    public List<Favorite> Favorites { get; set; } = [];
 
 }

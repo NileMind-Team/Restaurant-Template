@@ -24,9 +24,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<MenuItemOptionType> MenuItemOptionTypes { get; set; }
     public DbSet<BranchMenuItem> BranchMenuItems { get; set; }
     public DbSet<BranchMenuItemOption> BranchMenuItemOptions { get; set; }
+    public DbSet<Favorite> Favorites { get; set; }
     //public DbSet<Offer> Offers { get; set; }
     //public DbSet<OfferTarget> OfferTargets { get; set; }
-    //public DbSet<Favorite> Favorites { get; set; }
 
 
 

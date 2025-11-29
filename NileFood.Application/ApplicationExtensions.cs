@@ -60,6 +60,7 @@ public static class ApplicationExtensions
         services.AddScoped<IMenuItemOptionTypeService, MenuItemOptionTypeService>();
         services.AddScoped<IMenuItemOptionService, MenuItemOptionService>();
         services.AddScoped<IReviewService, ReviewService>();
+        services.AddScoped<IFavoriteService, FavoriteService>();
 
         return services;
     }
