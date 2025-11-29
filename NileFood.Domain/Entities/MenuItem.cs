@@ -19,7 +19,6 @@ public class MenuItem
 
 
     public List<BranchMenuItem> BranchMenuItems { get; set; } = [];
-    public List<MenuItemOption> MenuItemOptions { get; set; } = [];
-    //public List<OfferTarget> OfferTargets { get; set; } = [];    
     public List<MenuItemSchedule> MenuItemSchedules { get; set; } = [];
+    //public List<OfferTarget> OfferTargets { get; set; } = [];    
 }

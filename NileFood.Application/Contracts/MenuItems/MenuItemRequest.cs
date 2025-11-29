@@ -18,4 +18,7 @@ public class MenuItemRequest
 
     [FromForm]
     public List<MenuItemScheduleRequest> MenuItemSchedules { get; set; } = [];
+
+    //[FromForm]
+    //public List<MenuItemScheduleRequest> MenuItemSchedules { get; set; } = [];
 }

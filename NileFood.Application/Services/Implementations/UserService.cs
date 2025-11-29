@@ -189,4 +189,10 @@ public class UserService(ApplicationDbContext context, UserManager<ApplicationUs
         return Result.Success();
     }
 
+    public async Task<List<string>> GetUserRolesAsync(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+
+        return user == null ? [] : (await _userManager.GetRolesAsync(user)).ToList();
+    }
 }

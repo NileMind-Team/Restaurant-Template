@@ -3,17 +3,22 @@ using NileFood.Application.Abstractions;
 using NileFood.Application.Contracts.Common;
 using NileFood.Application.Contracts.MenuItems;
 using NileFood.Application.Services.Interfaces;
+using NileFood.Domain.Consts;
 using NileFood.Domain.Entities;
 using NileFood.Domain.Errors;
 using NileFood.Infrastructure.Data;
 
 namespace NileFood.Application.Services.Implementations;
 
-public class MenuItemService(ApplicationDbContext context, IFileService fileService, IFilterService<MenuItem> filterService) : IMenuItemService
+public class MenuItemService(ApplicationDbContext context, IUserService userService, IFileService fileService, IFilterService<MenuItem> filterService) : IMenuItemService
 {
+
+
     private readonly ApplicationDbContext _context = context;
+    private readonly IUserService _userService = userService;
     private readonly IFileService _fileService = fileService;
     private readonly IFilterService<MenuItem> _filterService = filterService;
+
 
     public async Task<Result<PaginatedList<MenuItemResponse>>> GetAllAsync(List<FilterDto> filters, UserParams userParams, int? categoryId)
     {
@@ -26,6 +31,20 @@ public class MenuItemService(ApplicationDbContext context, IFileService fileServ
         return Result.Success(x);
     }
 
+
+    public async Task<Result<List<MenuItemResponse>>> GetAllAsync(int? categoryId)
+    {
+        var menuItems = await _context.MenuItems
+            .Where(x => !categoryId.HasValue || x.CategoryId == categoryId)
+            .Include(x => x.Category)
+            .AsNoTracking()
+            .ProjectToType<MenuItemResponse>()
+            .ToListAsync();
+
+        return Result.Success(menuItems);
+    }
+
+
     public async Task<Result<MenuItemResponse>> GetAsync(int id)
     {
         var menuItem = await _context.MenuItems
@@ -36,12 +55,38 @@ public class MenuItemService(ApplicationDbContext context, IFileService fileServ
         return menuItem is null ? Result.Failure<MenuItemResponse>(MenuItemErrors.MenuItemNotFound) : Result.Success(menuItem);
     }
 
-    public async Task<Result<MenuItemResponse>> CreateAsync(MenuItemRequest request)
+    public async Task<Result<MenuItemResponse>> CreateAsync(MenuItemRequest request, string userId)
     {
         if (await _context.Categories.FindAsync(request.CategoryId) is not { } category)
             return Result.Failure<MenuItemResponse>(CategoryErrors.CategoryNotFound);
 
         var menuItem = request.Adapt<MenuItem>();
+
+
+        var userRoles = await _userService.GetUserRolesAsync(userId);
+        if (userRoles.Contains(DefaultRoles.Restaurant.Name))
+        {
+            foreach (var branch in _context.Branches.ToList())
+            {
+                menuItem.BranchMenuItems.Add(new BranchMenuItem
+                {
+                    BranchId = branch.Id,
+                });
+            }
+        }
+        else
+        {
+            var branch = await _context.Branches.FirstOrDefaultAsync(x => x.ManagerId == userId);
+            if (branch is not null)
+            {
+                menuItem.BranchMenuItems.Add(new BranchMenuItem
+                {
+                    BranchId = branch.Id,
+                });
+            }
+        }
+
+
 
         var imageUrl = await _fileService.UploadAsync(request.Image, $"Categories/{category.Name}");
         menuItem.ImageUrl = imageUrl;
@@ -154,4 +199,5 @@ public class MenuItemService(ApplicationDbContext context, IFileService fileServ
 
         return Result.Success();
     }
+
 }

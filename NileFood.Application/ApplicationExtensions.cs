@@ -58,6 +58,8 @@ public static class ApplicationExtensions
         services.AddScoped<IBranchService, BranchService>();
         services.AddScoped(typeof(IFilterService<>), typeof(FilterService<>));
         services.AddScoped<IMenuItemOptionTypeService, MenuItemOptionTypeService>();
+        services.AddScoped<IMenuItemOptionService, MenuItemOptionService>();
+        services.AddScoped<IReviewService, ReviewService>();
 
         return services;
     }

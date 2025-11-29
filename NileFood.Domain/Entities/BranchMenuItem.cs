@@ -10,4 +10,6 @@ public class BranchMenuItem
     public MenuItem MenuItem { get; set; } = null!;
 
     public bool IsAvailable { get; set; }
+
+    public List<BranchMenuItemOption> BranchMenuItemOptions { get; set; } = [];
 }

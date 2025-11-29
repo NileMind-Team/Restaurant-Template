@@ -22,7 +22,7 @@ public class ReviewConfigurations : IEntityTypeConfiguration<Review>
 {
     public void Configure(EntityTypeBuilder<Review> builder)
     {
-        builder.Property(x => x.Comment).HasMaxLength(100).IsRequired();
+        builder.Property(x => x.Comment).HasMaxLength(500).IsRequired();
 
 
         builder.HasOne(r => r.Branch)

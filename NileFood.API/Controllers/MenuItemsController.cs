@@ -28,6 +28,15 @@ public class MenuItemsController(IMenuItemService menuItemService) : ControllerB
     }
 
     [AllowAnonymous]
+    [HttpGet]
+    public async Task<IActionResult> GetAllWithoutPagination(int? categoryId)
+    {
+        var result = await _menuItemService.GetAllAsync(categoryId);
+
+        return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
+    }
+
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
@@ -40,7 +49,7 @@ public class MenuItemsController(IMenuItemService menuItemService) : ControllerB
     [HttpPost]
     public async Task<IActionResult> Add([FromForm] MenuItemRequest request)
     {
-        var result = await _menuItemService.CreateAsync(request);
+        var result = await _menuItemService.CreateAsync(request, User.GetUserId());
 
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }

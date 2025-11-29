@@ -13,8 +13,10 @@ public interface IUserService
 
     Task<Result<UserResponse>> AddAsync(CreateUserRequest request);
     Task<IEnumerable<UserResponse>> GetAllAsync();
+
     Task<Result<UserResponse>> GetByIdAsync(string id);
     Task<Result<string>> DeleteAsync(string email);
+    Task<List<string>> GetUserRolesAsync(string userId);
 
 
     Task<Result> AssignRoleAsync(string userId, string roleName);

@@ -12,5 +12,5 @@ public class Review
     public Branch Branch { get; set; } = null!;
 
     public decimal Rating { get; set; }
-    public string? Comment { get; set; }
+    public string Comment { get; set; } = null!;
 }

@@ -14,8 +14,8 @@ public class MenuItemResponse
     public bool IsActive { get; set; } = true;
 
     public int? Calories { get; set; }
-    public int PreparationTimeStart { get; set; }
-    public int PreparationTimeEnd { get; set; }
+    public int? PreparationTimeStart { get; set; }
+    public int? PreparationTimeEnd { get; set; }
 
     public CategoryResponse Category { get; set; } = null!;
 
