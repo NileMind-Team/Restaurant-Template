@@ -9,4 +9,6 @@ public interface IDeliveryFeeService
     Task<Result<DeliveryFeeResponse>> CreateAsync(DeliveryFeeRequest request);
     Task<Result> UpdateAsync(int id, DeliveryFeeRequest request);
     Task<Result> DeleteAsync(int id);
+    Task<Result> ChangeActiveStatusAsync(int id);
+
 }

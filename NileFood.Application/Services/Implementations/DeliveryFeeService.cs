@@ -80,4 +80,15 @@ public class DeliveryFeeService(ApplicationDbContext context) : IDeliveryFeeServ
         return Result.Success();
     }
 
+    public async Task<Result> ChangeActiveStatusAsync(int id)
+    {
+        if (await _context.DeliveryFees.FirstOrDefaultAsync(x => x.Id == id) is not { } deliveryFee)
+            return Result.Failure(DeliveryFeeErrors.DeliveryFeeNotFound);
+
+
+        deliveryFee.IsActive = !deliveryFee.IsActive;
+        await _context.SaveChangesAsync();
+
+        return Result.Success();
+    }
 }

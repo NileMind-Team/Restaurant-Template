@@ -43,12 +43,37 @@ public class MenuItemRequestValidator : AbstractValidator<MenuItemRequest>
             .WithMessage("Preparation time end must be 0 or greater.");
 
         RuleFor(x => x)
-            .Must(x =>
-                x.PreparationTimeStart.HasValue &&
-                x.PreparationTimeEnd.HasValue &&
-                x.PreparationTimeStart.Value < x.PreparationTimeEnd.Value)
+            .Must(x => x.PreparationTimeStart.HasValue && x.PreparationTimeEnd.HasValue && x.PreparationTimeStart.Value < x.PreparationTimeEnd.Value)
             .When(x => x.PreparationTimeStart.HasValue && x.PreparationTimeEnd.HasValue)
             .WithMessage("PreparationTimeStart must be less than PreparationTimeEnd.");
+
+
+
+        // ✅ Validation for MenuItemOptions
+        RuleForEach(x => x.MenuItemOptions)
+            .ChildRules(option =>
+            {
+                option.RuleFor(o => o.Name)
+                      .NotEmpty().WithMessage("Option name is required.")
+                      .MaximumLength(100).WithMessage("Option name cannot exceed 100 characters.");
+
+                option.RuleFor(o => o.Price)
+                      .GreaterThanOrEqualTo(0).WithMessage("Option price must be 0 or greater.");
+
+                option.RuleFor(o => o.TypeId)
+                      .GreaterThan(0).WithMessage("Option TypeId must be greater than 0.");
+            });
+
+        RuleFor(x => x.MenuItemOptions)
+            .Must(options =>
+                options == null
+                || options.GroupBy(o => new { o.Name, o.Price, o.TypeId })
+                          .All(g => g.Count() == 1)
+            )
+            .WithMessage("Option (Name, Price, TypeId) must be unique.");
+
+
+
 
 
         RuleFor(x => x.MenuItemSchedules)

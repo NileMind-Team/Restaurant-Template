@@ -9,7 +9,7 @@ public class BranchMenuItem
     public int MenuItemId { get; set; }
     public MenuItem MenuItem { get; set; } = null!;
 
-    public bool IsAvailable { get; set; }
+    public bool IsAvailable { get; set; } = true;
 
     public List<BranchMenuItemOption> BranchMenuItemOptions { get; set; } = [];
 }

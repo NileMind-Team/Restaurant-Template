@@ -8,7 +8,7 @@ public class Location
     public int CityId { get; set; }
     public City City { get; set; } = null!;
 
-    public string LocationUrl { get; set; } = null!;
+    public string? LocationUrl { get; set; }
 
     public string PhoneNumber { get; set; } = null!;
 

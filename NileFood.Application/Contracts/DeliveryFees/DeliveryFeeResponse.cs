@@ -8,6 +8,7 @@ public class DeliveryFeeResponse
 
     public int EstimatedTimeMin { get; set; }
     public int EstimatedTimeMax { get; set; }
+    public bool IsActive { get; set; }
 
     public int BranchId { get; set; }
 

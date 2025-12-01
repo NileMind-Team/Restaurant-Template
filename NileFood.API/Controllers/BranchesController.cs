@@ -25,6 +25,15 @@ public class BranchesController(IBranchService branchService) : ControllerBase
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }
 
+    [AllowAnonymous]
+    [HttpGet]
+    public async Task<IActionResult> GetList()
+    {
+        var result = await _branchService.GetListAsync();
+
+        return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
+    }
+
 
     [AllowAnonymous]
     [HttpGet("{id}")]

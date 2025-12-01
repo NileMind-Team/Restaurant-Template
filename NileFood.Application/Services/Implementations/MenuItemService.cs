@@ -1,5 +1,7 @@
 ﻿using Egyptos.Application.Abstractions;
 using NileFood.Application.Abstractions;
+using NileFood.Application.Contracts.BranchMenuItemOptions;
+using NileFood.Application.Contracts.Categories;
 using NileFood.Application.Contracts.Common;
 using NileFood.Application.Contracts.MenuItems;
 using NileFood.Application.Services.Interfaces;
@@ -12,8 +14,6 @@ namespace NileFood.Application.Services.Implementations;
 
 public class MenuItemService(ApplicationDbContext context, IUserService userService, IFileService fileService, IFilterService<MenuItem> filterService) : IMenuItemService
 {
-
-
     private readonly ApplicationDbContext _context = context;
     private readonly IUserService _userService = userService;
     private readonly IFileService _fileService = fileService;
@@ -44,65 +44,143 @@ public class MenuItemService(ApplicationDbContext context, IUserService userServ
         return Result.Success(menuItems);
     }
 
-
-    public async Task<Result<MenuItemResponse>> GetAsync(int id)
+    public async Task<Result<MenuItemDetailsResponse>> GetAsync(int id)
     {
-        var menuItem = await _context.MenuItems
+        var menuItemResponse = await _context.MenuItems
             .Where(x => x.Id == id)
-            .ProjectToType<MenuItemResponse>()
+            .Select(x => new MenuItemDetailsResponse
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                BasePrice = x.BasePrice,
+                ImageUrl = x.ImageUrl,
+                IsAllTime = x.IsAllTime,
+                IsActive = x.IsActive,
+                Calories = x.Calories,
+                PreparationTimeStart = x.PreparationTimeStart,
+                PreparationTimeEnd = x.PreparationTimeEnd,
+
+                Category = x.Category.Adapt<CategoryResponse>(),
+                MenuItemSchedules = x.MenuItemSchedules.Adapt<List<MenuItemScheduleResponse>>(),
+
+                BranchMenuItems = x.BranchMenuItems.Adapt<List<BranchMenuItemResponse>>(),
+
+
+                TypesWithOptions = x.BranchMenuItems
+                    .SelectMany(b => b.BranchMenuItemOptions)
+                    .GroupBy(o => o.MenuItemOption.TypeId)
+                    .Select(typeGroup => new OptionTypeWithOptions
+                    {
+                        Id = typeGroup.First().MenuItemOption.Type.Id,
+                        Name = typeGroup.First().MenuItemOption.Type.Name,
+                        MenuItemOptions = typeGroup
+                            .GroupBy(o => o.MenuItemOptionId)
+                            .Select(optGroup => new MenuItemOptionResponse
+                            {
+                                Id = optGroup.First().MenuItemOptionId,
+                                Name = optGroup.First().MenuItemOption.Name,
+                                Price = optGroup.First().MenuItemOption.Price,
+                                BranchMenuItemOption = optGroup
+                                    .Select(x => new BranchMenuItemOptionResponse
+                                    {
+                                        Id = x.Id,
+                                        BranchId = x.BranchMenuItem.BranchId,
+                                        IsActive = x.IsActive,
+                                        IsAvailable = x.IsAvailable
+                                    })
+                                    .ToList()
+                            })
+                            .ToList()
+                    })
+                    .ToList()
+            })
             .FirstOrDefaultAsync();
 
-        return menuItem is null ? Result.Failure<MenuItemResponse>(MenuItemErrors.MenuItemNotFound) : Result.Success(menuItem);
+
+        return menuItemResponse is null ? Result.Failure<MenuItemDetailsResponse>(MenuItemErrors.MenuItemNotFound) : Result.Success(menuItemResponse);
     }
+
+
 
     public async Task<Result<MenuItemResponse>> CreateAsync(MenuItemRequest request, string userId)
     {
-        if (await _context.Categories.FindAsync(request.CategoryId) is not { } category)
-            return Result.Failure<MenuItemResponse>(CategoryErrors.CategoryNotFound);
+        using var transaction = await _context.Database.BeginTransactionAsync();
 
-        var menuItem = request.Adapt<MenuItem>();
-
-
-        var userRoles = await _userService.GetUserRolesAsync(userId);
-        if (userRoles.Contains(DefaultRoles.Restaurant.Name))
+        try
         {
-            foreach (var branch in _context.Branches.ToList())
+            if (await _context.Categories.FindAsync(request.CategoryId) is not { } category)
+                return Result.Failure<MenuItemResponse>(CategoryErrors.CategoryNotFound);
+
+            var menuItem = request.Adapt<MenuItem>();
+            menuItem.ImageUrl = await _fileService.UploadAsync(request.Image, $"Categories/{category.Name}");
+            menuItem.IsAllTime = !menuItem.MenuItemSchedules.Any();
+
+            _context.MenuItems.Add(menuItem);
+            await _context.SaveChangesAsync();
+
+            // 1) options once
+            var options = request.MenuItemOptions.Adapt<List<MenuItemOption>>();
+            _context.MenuItemOptions.AddRange(options);
+            await _context.SaveChangesAsync();
+
+            var roles = await _userService.GetUserRolesAsync(userId);
+            bool isAdmin = roles.Contains(DefaultRoles.Admin.Name) || roles.Contains(DefaultRoles.Restaurant.Name);
+
+            List<Branch> branches;
+
+            if (isAdmin)
+                branches = await _context.Branches.ToListAsync();
+            else
             {
-                menuItem.BranchMenuItems.Add(new BranchMenuItem
-                {
-                    BranchId = branch.Id,
-                });
+                branches = await _context.Branches
+                    .Where(x => x.ManagerId == userId)
+                    .ToListAsync();
             }
+
+            if (!branches.Any() && (request.MenuItemOptions.Any() || request.MenuItemSchedules.Any()))
+                return Result.Failure<MenuItemResponse>(BranchErrors.NoBranchesForManager);
+
+            var branchMenuItems = branches.Select(branch => new BranchMenuItem
+            {
+                BranchId = branch.Id,
+                MenuItemId = menuItem.Id,
+                IsAvailable = true
+            }).ToList();
+
+            _context.BranchMenuItems.AddRange(branchMenuItems);
+            await _context.SaveChangesAsync();
+
+            // link options to branches
+            var branchMenuItemOptions = branchMenuItems
+                .SelectMany(bmi => options.Select(opt => new BranchMenuItemOption
+                {
+                    BranchMenuItemId = bmi.Id,
+                    MenuItemOptionId = opt.Id,
+                    IsActive = true,
+                    IsAvailable = true
+                }))
+                .ToList();
+
+            _context.BranchMenuItemOptions.AddRange(branchMenuItemOptions);
+            await _context.SaveChangesAsync();
+
+
+            await transaction.CommitAsync();
+
+            await _context.Entry(menuItem).Reference(r => r.Category).LoadAsync();
+
+            return Result.Success(menuItem.Adapt<MenuItemResponse>());
         }
-        else
+        catch (Exception ex)
         {
-            var branch = await _context.Branches.FirstOrDefaultAsync(x => x.ManagerId == userId);
-            if (branch is not null)
-            {
-                menuItem.BranchMenuItems.Add(new BranchMenuItem
-                {
-                    BranchId = branch.Id,
-                });
-            }
+            // roll back 
+            await transaction.RollbackAsync();
+
+            return Result.Failure<MenuItemResponse>(new("TransactionFailed", $"An error occurred: {ex.Message}", StatusCodes.Status400BadRequest));
         }
-
-
-
-        var imageUrl = await _fileService.UploadAsync(request.Image, $"Categories/{category.Name}");
-        menuItem.ImageUrl = imageUrl;
-
-        menuItem.IsAllTime = !menuItem.MenuItemSchedules.Any();
-
-
-        await _context.MenuItems.AddAsync(menuItem);
-        await _context.SaveChangesAsync();
-
-        await _context.Entry(menuItem).Reference(r => r.Category).LoadAsync();
-
-        var menuItemResponse = menuItem.Adapt<MenuItemResponse>();
-
-        return Result.Success(menuItemResponse);
     }
+
 
     public async Task<Result> UpdateAsync(int id, UpdateMenuItemRequest request)
     {

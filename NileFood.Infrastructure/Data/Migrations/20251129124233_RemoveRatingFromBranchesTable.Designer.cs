@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NileFood.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using NileFood.Infrastructure.Data;
 namespace NileFood.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251129124233_RemoveRatingFromBranchesTable")]
+    partial class RemoveRatingFromBranchesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,7 +223,9 @@ namespace NileFood.Infrastructure.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LocationUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ManagerId")
                         .IsRequired()
@@ -393,9 +398,6 @@ namespace NileFood.Infrastructure.Data.Migrations
                     b.Property<decimal>("Fee")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
@@ -557,6 +559,7 @@ namespace NileFood.Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LocationUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")

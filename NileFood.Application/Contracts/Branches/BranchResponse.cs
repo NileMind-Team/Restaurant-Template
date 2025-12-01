@@ -1,4 +1,5 @@
 ﻿using NileFood.Application.Contracts.Cities;
+using NileFood.Application.Contracts.PhoneNumbers;
 
 namespace NileFood.Application.Contracts.Branches;
 public class BranchResponse
@@ -20,4 +21,6 @@ public class BranchResponse
     public CityResponse City { get; set; } = null!;
 
     public string ManagerId { get; set; } = null!;
+
+    public List<PhoneNumberResponse> PhoneNumbers { get; set; } = [];
 }

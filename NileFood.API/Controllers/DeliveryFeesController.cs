@@ -59,4 +59,12 @@ public class DeliveryFeesController(IDeliveryFeeService deliveryFeeService) : Co
 
         return result.IsSuccess ? NoContent() : result.ToProblem();
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> ChangeActiveStatus(int id)
+    {
+        var result = await _deliveryFeeService.ChangeActiveStatusAsync(id);
+
+        return result.IsSuccess ? NoContent() : result.ToProblem();
+    }
 }

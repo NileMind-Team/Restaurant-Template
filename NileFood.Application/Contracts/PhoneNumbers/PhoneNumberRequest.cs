@@ -1,0 +1,9 @@
+﻿namespace NileFood.Application.Contracts.PhoneNumbers;
+public class PhoneNumberRequest
+{
+    public int? Id { get; set; }
+
+    public string Phone { get; set; } = null!;
+    public string Type { get; set; } = null!;
+    public bool IsWhatsapp { get; set; }
+}

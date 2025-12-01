@@ -4,7 +4,7 @@ namespace NileFood.Application.Contracts.Locations;
 
 public class LocationRequestValidator : AbstractValidator<LocationRequest>
 {
-    
+
     public LocationRequestValidator(ApplicationDbContext context)
     {
 
@@ -14,9 +14,9 @@ public class LocationRequestValidator : AbstractValidator<LocationRequest>
             .WithMessage("City not found.");
 
         RuleFor(x => x.LocationUrl)
-            .NotEmpty()
-            .Must(url => url.StartsWith("https://www.google.com/maps"))
+            .Must(url => url == null || Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.Host.Contains("google.com") && uri.AbsolutePath.StartsWith("/maps"))
             .WithMessage("Invalid Google Maps URL.");
+
 
         RuleFor(x => x.StreetName).NotEmpty();
 

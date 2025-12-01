@@ -12,7 +12,6 @@ public class BranchConfigurations : IEntityTypeConfiguration<Branch>
         builder.Property(x => x.Name).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Email).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Address).HasMaxLength(100).IsRequired();
-        builder.Property(x => x.LocationUrl).HasMaxLength(500).IsRequired();
         builder.Property(x => x.Status).HasMaxLength(100).IsRequired();
     }
 }

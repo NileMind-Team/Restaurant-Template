@@ -24,6 +24,8 @@ internal class MappingProfile : IRegister
             .Map(dest => dest.Email, src => src.user.Email)
             .Map(dest => dest.Roles, src => src.roles);
 
-        config.NewConfig<Location, LocationResponse>().Map(dest => dest.IsDefaultLocation,src => src.User != null && src.User.DefaultLocationId == src.Id);
+        config.NewConfig<Location, LocationResponse>().Map(dest => dest.IsDefaultLocation, src => src.User != null && src.User.DefaultLocationId == src.Id);
+
+
     }
 }

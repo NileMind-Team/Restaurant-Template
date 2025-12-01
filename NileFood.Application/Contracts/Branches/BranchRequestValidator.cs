@@ -1,4 +1,6 @@
-﻿namespace NileFood.Application.Contracts.Branches;
+﻿using NileFood.Application.Contracts.PhoneNumbers;
+
+namespace NileFood.Application.Contracts.Branches;
 public class BranchRequestValidator : AbstractValidator<BranchRequest>
 {
     public BranchRequestValidator()
@@ -19,9 +21,9 @@ public class BranchRequestValidator : AbstractValidator<BranchRequest>
 
 
         RuleFor(x => x.LocationUrl)
-            .NotEmpty().WithMessage("Location URL is required")
-            .Must(url => Uri.IsWellFormedUriString(url, UriKind.Absolute))
-            .WithMessage("Invalid location URL");
+            .Must(url => url == null || Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.Host.Contains("google.com") && uri.AbsolutePath.StartsWith("/maps"))
+            .WithMessage("Invalid Google Maps URL.");
+
 
 
         RuleFor(x => x.Status)
@@ -30,10 +32,12 @@ public class BranchRequestValidator : AbstractValidator<BranchRequest>
             .WithMessage("Status must be either 'Open' or 'Closed'");
 
 
-        RuleFor(x => x.Rating_Avgarage)
-            .GreaterThanOrEqualTo(0)
-            .LessThanOrEqualTo(5)
-            .WithMessage("Rating must be between 0 and 5.");
+        RuleForEach(x => x.PhoneNumbers).SetValidator(new PhoneNumberRequestValidator());
+
+        RuleFor(x => x.PhoneNumbers)
+        .Must(numbers => numbers == null
+            || numbers.GroupBy(n => n.Phone).All(g => g.Count() == 1))
+        .WithMessage("Phone numbers must be unique.");
 
 
         RuleFor(x => x.OpeningTime)

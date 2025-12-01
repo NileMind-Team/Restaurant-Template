@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NileFood.Application.Contracts.MenuItemOptions;
 
 namespace NileFood.Application.Contracts.MenuItems;
 
@@ -19,6 +20,6 @@ public class MenuItemRequest
     [FromForm]
     public List<MenuItemScheduleRequest> MenuItemSchedules { get; set; } = [];
 
-    //[FromForm]
-    //public List<MenuItemScheduleRequest> MenuItemSchedules { get; set; } = [];
+    [FromForm]
+    public List<MenuItemOptionRequest> MenuItemOptions { get; set; } = [];
 }

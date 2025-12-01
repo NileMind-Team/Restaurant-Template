@@ -9,9 +9,8 @@ public class Branch
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string Address { get; set; } = null!;
-    public string LocationUrl { get; set; } = null!;
+    public string? LocationUrl { get; set; }
     public string Status { get; set; } = null!;
-    public double Rating_Avgarage { get; set; }
 
     public TimeSpan OpeningTime { get; set; }
     public TimeSpan ClosingTime { get; set; }
@@ -31,6 +30,7 @@ public class Branch
     public List<BranchPromoCode> BranchPromoCodes { get; set; } = [];
     public List<BranchMenuItem> BranchMenuItems { get; set; } = [];
     public List<DeliveryFee> DeliveryFee { get; set; } = [];
+    public List<PhoneNumber> PhoneNumbers { get; set; } = [];
     //public List<OfferTarget> OfferTargets { get; set; } = [];
 }
 

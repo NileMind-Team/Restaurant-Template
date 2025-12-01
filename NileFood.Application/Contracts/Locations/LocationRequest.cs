@@ -2,10 +2,10 @@
 
 public class LocationRequest
 {
-    
-    public int CityId { get; set; }    
 
-    public string LocationUrl { get; set; } = null!;
+    public int CityId { get; set; }
+
+    public string? LocationUrl { get; set; }
     public string StreetName { get; set; } = null!;
 
     public string PhoneNumber { get; set; } = null!;
@@ -14,5 +14,5 @@ public class LocationRequest
     public int FloorNumber { get; set; }
     public int FlatNumber { get; set; }
 
-    public string? DetailedDescription { get; set; }    
+    public string? DetailedDescription { get; set; }
 }
