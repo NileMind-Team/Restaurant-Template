@@ -1,4 +1,5 @@
-﻿using NileFood.Application.Contracts.MenuItems;
+﻿using NileFood.Application.Contracts.MenuItemOptions;
+using NileFood.Application.Contracts.MenuItems;
 
 namespace NileFood.Application.Contracts.BranchMenuItemOptions;
 public class OptionTypeWithOptions

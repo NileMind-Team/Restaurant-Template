@@ -1,4 +1,6 @@
-﻿namespace NileFood.Application.Contracts.BranchMenuItemOptions;
+﻿using NileFood.Application.Contracts.BranchMenuItemOptions;
+
+namespace NileFood.Application.Contracts.MenuItemOptions;
 public class MenuItemOptionResponse
 {
     public int Id { get; set; }
