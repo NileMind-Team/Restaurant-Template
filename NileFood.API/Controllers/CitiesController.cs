@@ -15,6 +15,7 @@ public class CitiesController(ICityService cityService) : ControllerBase
     private readonly ICityService _cityService = cityService;
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAll()
     {
         var result = await _cityService.GetAllAsync();
@@ -24,6 +25,7 @@ public class CitiesController(ICityService cityService) : ControllerBase
 
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<IActionResult> Get(int id)
     {
         var result = await _cityService.GetAsync(id);
@@ -39,7 +41,7 @@ public class CitiesController(ICityService cityService) : ControllerBase
 
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }
-    
+
 
 
     [HttpPut("{id}")]

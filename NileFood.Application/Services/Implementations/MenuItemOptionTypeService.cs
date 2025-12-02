@@ -15,7 +15,7 @@ public class MenuItemOptionTypeService(ApplicationDbContext context) : IMenuItem
     {
         var menuItemOptionTypes = await _context.MenuItemOptionTypes
             .ProjectToType<MenuItemOptionTypeResponse>()
-            .AsNoTracking()
+
             .ToListAsync();
 
         return Result.Success(menuItemOptionTypes);

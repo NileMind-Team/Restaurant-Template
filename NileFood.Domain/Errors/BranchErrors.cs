@@ -11,4 +11,6 @@ public class BranchErrors
     new("MenuItem.NoBranchesForManager",
         "This manager does not have any assigned branches.",
         StatusCodes.Status400BadRequest);
+
+    public static readonly Error InvalidBranchIds = new("Branch.InvalidIds", "One or more branch ids are invalid.", StatusCodes.Status400BadRequest);
 }

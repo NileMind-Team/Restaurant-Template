@@ -1,0 +1,15 @@
+﻿namespace NileFood.Application.Contracts.ItemOffers;
+public class ItemOfferRequest
+{
+    public int MenuItemId { get; set; }
+
+    public bool IsPercentage { get; set; }
+    public decimal DiscountValue { get; set; }
+
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+
+    public bool IsEnabled { get; set; }
+
+    public List<int> BranchesIds { get; set; } = [];
+}

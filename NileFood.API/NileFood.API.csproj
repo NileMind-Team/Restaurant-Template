@@ -19,4 +19,8 @@
     <ProjectReference Include="..\NileFood.Application\NileFood.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Categories\" />
+  </ItemGroup>
+
 </Project>

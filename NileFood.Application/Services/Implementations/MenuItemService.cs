@@ -75,8 +75,10 @@ public class MenuItemService(ApplicationDbContext context, IUserService userServ
                     {
                         Id = typeGroup.First().MenuItemOption.Type.Id,
                         Name = typeGroup.First().MenuItemOption.Type.Name,
-                        MenuItemOptions = typeGroup
-                            .GroupBy(o => o.MenuItemOptionId)
+                        CanSelectMultipleOptions = typeGroup.First().MenuItemOption.Type.CanSelectMultipleOptions,
+                        IsSelectionRequired = typeGroup.First().MenuItemOption.Type.IsSelectionRequired,
+
+                        MenuItemOptions = typeGroup.GroupBy(o => o.MenuItemOptionId)
                             .Select(optGroup => new MenuItemOptionResponse
                             {
                                 Id = optGroup.First().MenuItemOptionId,

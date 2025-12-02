@@ -16,6 +16,9 @@ public class BranchService(ApplicationDbContext context, IUserService userServic
     public async Task<Result<List<BranchResponse>>> GetAllAsync()
     {
         var branches = await _context.Branches
+            .Include(x => x.City)
+            .Include(x => x.PhoneNumbers)
+            .Include(x => x.Reviews)
             .ProjectToType<BranchResponse>()
             .AsNoTracking()
             .ToListAsync();
@@ -40,6 +43,7 @@ public class BranchService(ApplicationDbContext context, IUserService userServic
         var branch = await _context.Branches
             .Include(x => x.City)
             .Include(x => x.PhoneNumbers)
+            .Include(x => x.Reviews)
             .Where(x => x.Id == id)
             .ProjectToType<BranchResponse>()
             .FirstOrDefaultAsync();
