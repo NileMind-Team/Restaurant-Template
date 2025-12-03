@@ -63,6 +63,7 @@ public static class ApplicationExtensions
         services.AddScoped<IFavoriteService, FavoriteService>();
         services.AddScoped<IDeliveryFeeService, DeliveryFeeService>();
         services.AddScoped<IItemOfferService, ItemOfferService>();
+        services.AddScoped<ICartItemService, CartItemService>();
 
         return services;
     }

@@ -19,6 +19,7 @@ public class BranchService(ApplicationDbContext context, IUserService userServic
             .Include(x => x.City)
             .Include(x => x.PhoneNumbers)
             .Include(x => x.Reviews)
+            .ThenInclude(x => x.User)
             .ProjectToType<BranchResponse>()
             .AsNoTracking()
             .ToListAsync();

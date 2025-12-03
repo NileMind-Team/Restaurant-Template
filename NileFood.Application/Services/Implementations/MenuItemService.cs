@@ -3,6 +3,7 @@ using NileFood.Application.Abstractions;
 using NileFood.Application.Contracts.BranchMenuItemOptions;
 using NileFood.Application.Contracts.Categories;
 using NileFood.Application.Contracts.Common;
+using NileFood.Application.Contracts.ItemOffers;
 using NileFood.Application.Contracts.MenuItemOptions;
 using NileFood.Application.Contracts.MenuItems;
 using NileFood.Application.Services.Interfaces;
@@ -38,9 +39,12 @@ public class MenuItemService(ApplicationDbContext context, IUserService userServ
         var menuItems = await _context.MenuItems
             .Where(x => !categoryId.HasValue || x.CategoryId == categoryId)
             .Include(x => x.Category)
+            .Include(x => x.ItemOffers)
             .AsNoTracking()
             .ProjectToType<MenuItemResponse>()
             .ToListAsync();
+
+
 
         return Result.Success(menuItems);
     }
@@ -63,6 +67,9 @@ public class MenuItemService(ApplicationDbContext context, IUserService userServ
                 PreparationTimeEnd = x.PreparationTimeEnd,
 
                 Category = x.Category.Adapt<CategoryResponse>(),
+                ItemOffer = x.ItemOffers.FirstOrDefault(o => o.IsEnabled && DateTime.UtcNow.AddHours(1) >= o.StartDate && DateTime.UtcNow.AddHours(1) <= o.EndDate)
+                .Adapt<ItemOfferResponse>(),
+
                 MenuItemSchedules = x.MenuItemSchedules.Adapt<List<MenuItemScheduleResponse>>(),
 
                 BranchMenuItems = x.BranchMenuItems.Adapt<List<BranchMenuItemResponse>>(),

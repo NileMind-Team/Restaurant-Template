@@ -1,4 +1,5 @@
 ﻿using NileFood.Application.Contracts.Categories;
+using NileFood.Application.Contracts.ItemOffers;
 
 namespace NileFood.Application.Contracts.MenuItems;
 
@@ -18,4 +19,6 @@ public class MenuItemResponse
     public int? PreparationTimeEnd { get; set; }
 
     public CategoryResponse Category { get; set; } = null!;
+
+    public ItemOfferResponse ItemOffer { get; set; } = null!;
 }

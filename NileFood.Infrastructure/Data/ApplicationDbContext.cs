@@ -27,6 +27,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Favorite> Favorites { get; set; }
     public DbSet<ItemOffer> ItemOffers { get; set; }
     public DbSet<BranchItemOffer> BranchItemOffers { get; set; }
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<CartItemOption> CartItemOptions { get; set; }
 
 
 

@@ -11,17 +11,15 @@ public class ItemOfferRequestValidator : AbstractValidator<ItemOfferRequest>
             .GreaterThan(0)
             .WithMessage("Discount value must be greater than 0.");
 
-        RuleFor(x => x.StartDate)
-            .LessThan(x => x.EndDate)
-            .WithMessage("Start date must be before end date.");
+        var now = DateTime.Now;
 
         RuleFor(x => x.StartDate)
-            .GreaterThan(DateTime.UtcNow.AddMinutes(-1))
-            .WithMessage("Start date cannot be in the past.");
+            .GreaterThan(now)
+            .WithMessage("Start date must be in the future.");
 
         RuleFor(x => x.EndDate)
-            .GreaterThan(DateTime.UtcNow)
-            .WithMessage("End date must be in the future.");
+            .GreaterThan(x => x.StartDate)
+            .WithMessage("End date must be after start date.");
 
         RuleFor(x => x.IsPercentage)
             .NotNull();

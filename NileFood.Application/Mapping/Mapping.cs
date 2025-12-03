@@ -1,5 +1,7 @@
 ﻿using NileFood.Application.Contracts.Authentication;
+using NileFood.Application.Contracts.CartItems;
 using NileFood.Application.Contracts.Locations;
+using NileFood.Application.Contracts.MenuItems;
 using NileFood.Application.Contracts.Users;
 using NileFood.Domain.Entities;
 using NileFood.Domain.Entities.Identity;
@@ -26,6 +28,19 @@ internal class MappingProfile : IRegister
 
         config.NewConfig<Location, LocationResponse>().Map(dest => dest.IsDefaultLocation, src => src.User != null && src.User.DefaultLocationId == src.Id);
 
+
+        TypeAdapterConfig<MenuItem, MenuItemResponse>.NewConfig()
+            .Map(dest => dest.ItemOffer, src => src.ItemOffers
+            .Where(o => o.IsEnabled && DateTime.UtcNow.AddHours(1) >= o.StartDate && DateTime.UtcNow.AddHours(1) <= o.EndDate)
+            .OrderBy(o => o.StartDate)
+            .FirstOrDefault());
+
+        TypeAdapterConfig<CartItem, CartItemResponse>
+    .NewConfig()
+    .Map(dest => dest.MenuItemOptions,
+         src => src.Options.Select(o => o.MenuItemOption))
+        .Map(dest => dest.TotalPrice,
+         src => src.TotalPrice);
 
     }
 }

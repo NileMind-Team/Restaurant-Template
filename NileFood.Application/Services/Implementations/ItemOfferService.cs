@@ -12,10 +12,13 @@ public class ItemOfferService(ApplicationDbContext context) : IItemOfferService
 
     public async Task<Result<List<ItemOfferResponse>>> GetAllActiveAsync()
     {
+        var now = DateTime.UtcNow.AddHours(1);
+
         var itemOffers = await _context.ItemOffers
-            .Where(x => x.IsEnabled && DateTime.UtcNow >= x.StartDate && DateTime.UtcNow <= x.EndDate)
+            .Where(x => x.IsEnabled &&
+                        now >= x.StartDate &&
+                        now <= x.EndDate)
             .ProjectToType<ItemOfferResponse>()
-            .AsNoTracking()
             .ToListAsync();
 
         return Result.Success(itemOffers);
@@ -33,6 +36,11 @@ public class ItemOfferService(ApplicationDbContext context) : IItemOfferService
 
     public async Task<Result<ItemOfferResponse>> CreateAsync(ItemOfferRequest request)
     {
+
+        request.StartDate = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Local).ToUniversalTime();
+        request.EndDate = DateTime.SpecifyKind(request.EndDate, DateTimeKind.Local).ToUniversalTime();
+
+
         if (!await _context.MenuItems.AnyAsync(x => x.Id == request.MenuItemId))
             return Result.Failure<ItemOfferResponse>(MenuItemErrors.MenuItemNotFound);
 
@@ -54,6 +62,8 @@ public class ItemOfferService(ApplicationDbContext context) : IItemOfferService
 
         var itemOffer = request.Adapt<ItemOffer>();
         itemOffer.BranchItemOffers = request.BranchesIds.Select(branchId => new BranchItemOffer { BranchId = branchId }).ToList();
+
+
 
 
         _context.ItemOffers.Add(itemOffer);

@@ -1,5 +1,6 @@
 ﻿using NileFood.Application.Contracts.BranchMenuItemOptions;
 using NileFood.Application.Contracts.Categories;
+using NileFood.Application.Contracts.ItemOffers;
 
 namespace NileFood.Application.Contracts.MenuItems;
 public class MenuItemDetailsResponse
@@ -19,6 +20,7 @@ public class MenuItemDetailsResponse
 
 
     public CategoryResponse Category { get; set; } = null!;
+    public ItemOfferResponse ItemOffer { get; set; } = null!;
     public List<MenuItemScheduleResponse> MenuItemSchedules { get; set; } = [];
 
 

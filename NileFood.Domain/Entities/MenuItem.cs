@@ -21,4 +21,6 @@ public class MenuItem
     public List<BranchMenuItem> BranchMenuItems { get; set; } = [];
     public List<MenuItemSchedule> MenuItemSchedules { get; set; } = [];
     public List<Favorite> Favorites { get; set; } = [];
+
+    public List<ItemOffer> ItemOffers { get; set; } = [];
 }
