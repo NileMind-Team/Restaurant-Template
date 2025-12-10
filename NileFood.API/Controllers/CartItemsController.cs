@@ -30,6 +30,14 @@ public class CartItemsController(ICartItemService cartItemService) : ControllerB
         return result.IsSuccess ? Ok() : result.ToProblem();
     }
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateQuantity(int id, CartItemQuantityRequest request)
+    {
+        var result = await _cartItemService.UpdateQuantityAsync(id, request);
+
+        return result.IsSuccess ? NoContent() : result.ToProblem();
+    }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)

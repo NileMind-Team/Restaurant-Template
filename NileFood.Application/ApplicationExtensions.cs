@@ -64,6 +64,7 @@ public static class ApplicationExtensions
         services.AddScoped<IDeliveryFeeService, DeliveryFeeService>();
         services.AddScoped<IItemOfferService, ItemOfferService>();
         services.AddScoped<ICartItemService, CartItemService>();
+        services.AddScoped<IOrderService, OrderService>();
 
         return services;
     }

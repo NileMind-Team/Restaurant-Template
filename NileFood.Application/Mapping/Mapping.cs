@@ -2,6 +2,7 @@
 using NileFood.Application.Contracts.CartItems;
 using NileFood.Application.Contracts.Locations;
 using NileFood.Application.Contracts.MenuItems;
+using NileFood.Application.Contracts.Orders;
 using NileFood.Application.Contracts.Users;
 using NileFood.Domain.Entities;
 using NileFood.Domain.Entities.Identity;
@@ -20,6 +21,9 @@ internal class MappingProfile : IRegister
             .Map(des => des.UserName, src => src.Email)
             .Map(des => des.ImageUrl, src => "Profiles/Default-Image.jpg");
 
+        config.NewConfig<Order, OrderResponse>()
+            .Map(dest => dest.Status, src => src.Status.ToString());
+
         TypeAdapterConfig<(ApplicationUser user, List<string> roles), UserResponse>
             .NewConfig()
             .Map(dest => dest.Id, src => src.user.Id)
@@ -35,12 +39,22 @@ internal class MappingProfile : IRegister
             .OrderBy(o => o.StartDate)
             .FirstOrDefault());
 
-        TypeAdapterConfig<CartItem, CartItemResponse>
-    .NewConfig()
-    .Map(dest => dest.MenuItemOptions,
-         src => src.Options.Select(o => o.MenuItemOption))
-        .Map(dest => dest.TotalPrice,
-         src => src.TotalPrice);
+        TypeAdapterConfig<CartItem, CartItemResponse>.NewConfig()
+            .Map(dest => dest.MenuItemOptions,
+             src => src.Options.Select(o => o.MenuItemOption))
+            .Map(dest => dest.TotalPrice,
+             src => src.TotalPrice);
+
+        config.NewConfig<CartItem, OrderItem>()
+            .Map(des => des.MenuItemNameSnapshotAtOrder, src => src.MenuItem.Name)
+            .Map(des => des.MenuItemDescriptionAtOrder, src => src.MenuItem.Description)
+            .Map(des => des.MenuItemBasePriceSnapshotAtOrder, src => src.MenuItem.BasePrice)
+            .Map(des => des.MenuItemImageUrlSnapshotAtOrder, src => src.MenuItem.ImageUrl);
+
+        config.NewConfig<CartItemOption, OrderItemOption>()
+            .Map(des => des.OptionNameAtOrder, src => src.MenuItemOption.Name)
+            .Map(des => des.OptionPriceAtOrder, src => src.MenuItemOption.Price);
+
 
     }
 }

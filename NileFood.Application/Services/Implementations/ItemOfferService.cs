@@ -76,6 +76,9 @@ public class ItemOfferService(ApplicationDbContext context) : IItemOfferService
     public async Task<Result> UpdateAsync(int id, ItemOfferRequest request)
     {
 
+        request.StartDate = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Local).ToUniversalTime();
+        request.EndDate = DateTime.SpecifyKind(request.EndDate, DateTimeKind.Local).ToUniversalTime();
+
         if (await _context.ItemOffers.Include(x => x.BranchItemOffers).FirstOrDefaultAsync(x => x.Id == id) is not { } itemOffer)
             return Result.Failure<ItemOfferResponse>(ItemOfferErrors.ItemOfferNotFound);
 

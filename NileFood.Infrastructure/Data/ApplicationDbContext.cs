@@ -31,6 +31,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<CartItemOption> CartItemOptions { get; set; }
 
+    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<OrderItem> OrderItems { get; set; } = null!;
+    public DbSet<OrderItemOption> OrderItemOptions { get; set; } = null!;
+
 
 
 

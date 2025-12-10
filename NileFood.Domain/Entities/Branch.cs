@@ -31,7 +31,7 @@ public class Branch
     public List<BranchMenuItem> BranchMenuItems { get; set; } = [];
     public List<DeliveryFee> DeliveryFee { get; set; } = [];
     public List<PhoneNumber> PhoneNumbers { get; set; } = [];
-    //public List<OfferTarget> OfferTargets { get; set; } = [];
+    public List<Order> Orders { get; set; } = [];
 }
 
 

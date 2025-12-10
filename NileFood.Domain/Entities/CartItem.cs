@@ -18,5 +18,5 @@ public class CartItem
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
 
-    public decimal TotalPrice => (MenuItem.BasePrice * Quantity) + Options.Sum(x => x.MenuItemOption.Price);
+    public decimal TotalPrice => (MenuItem.BasePrice * Quantity) + (Quantity * Options.Sum(x => x.MenuItemOption.Price));
 }

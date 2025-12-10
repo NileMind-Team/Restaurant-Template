@@ -104,6 +104,23 @@ public class CartItemService(ApplicationDbContext context) : ICartItemService
         throw new NotImplementedException();
     }
 
+    public async Task<Result> UpdateQuantityAsync(int id, CartItemQuantityRequest request)
+    {
+        // Check existence first
+        var exists = await _context.CartItems.AnyAsync(c => c.Id == id);
+        if (!exists)
+            return Result.Failure(CartItemErrors.CartItemNotFound);
+
+        // Update directly
+        await _context.CartItems
+            .Where(c => c.Id == request.MenuItemId)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(c => c.Quantity, request.Quantity)
+            );
+
+        return Result.Success();
+    }
+
 
     public async Task<Result> DeleteAsync(int id)
     {

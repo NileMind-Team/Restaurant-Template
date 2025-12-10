@@ -8,5 +8,6 @@ public interface ICartItemService
     //Task<Result<CartItemResponse>> GetAsync(int id);
     Task<Result> CreateAsync(CartItemRequest request, string userId);
     Task<Result> UpdateAsync(int id, CartItemRequest request);
+    Task<Result> UpdateQuantityAsync(int id, CartItemQuantityRequest request);
     Task<Result> DeleteAsync(int id);
 }
